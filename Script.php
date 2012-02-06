@@ -18,7 +18,7 @@ $pwd = decode5t($RunningUser['HIDDEN_FIELD2']);
 $UserEmail = $RunningUser['HIDDEN_FIELD3'];
 $loginDetails = "userid=$user"."&"."pwd=$pwd";
 $ch = curl_init();
-$userOld = mysql_query("SELECT * FROM HIDDEN_TABLE2 WHERE HIDDEN_FIELD='$user'");
+$userOld = mysql_query("SELECT * FROM HIDDEN_TABLE2 WHERE HIDDEN_FIELD='" . mysql_real_escape_string($user) . "'");
 
 $header=array(
   'User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12',
@@ -92,7 +92,7 @@ do
 		$Alreadythere = false;
 		if(($status=="Selected") || ($status=="Not Selected"))
 		{
-			$userOld = mysql_query("SELECT * FROM HIDDEN_TABLE2 WHERE HIDDEN_FIELD='$user'");
+			$userOld = mysql_query("SELECT * FROM HIDDEN_TABLE2 WHERE HIDDEN_FIELD='" . mysql_real_escape_string($user) . "'");
 			while($row = mysql_fetch_array($userOld))
   			{
   				if($row['HIDDEN_FIELDa'] == $jobid)
@@ -110,7 +110,13 @@ do
  				$body = "$status - $job , $company";
  				$headers = 'From: admin@jobmine.com';
  				if (mail($to, $subject, $body, $headers)) {
- 					$res = mysql_query("INSERT INTO HIDDEN_TABLE2 VALUES ('$user', '$jobid', '$status')");
+                    $res = mysql_query("INSERT INTO HIDDEN_TABLE2 VALUES ('" . 
+                        mysql_real_escape_string($user) . 
+                        "', '" . 
+                        mysql_real_escape_string($jobid) .
+                        "', '" .
+                        mysql_real_escape_string($status) .
+                        "')");
    					echo("Message successfully sent!");
 	  			} else {
    					echo("Message delivery failed...");
