@@ -28,7 +28,13 @@ if($_POST['Submit']=='Register')
   		}
 		mysql_select_db("HIDDEN_DB", $con);
 		$pwd = encode5t($_POST['pwd']);
-		$state = "INSERT INTO HIDDEN_TABLE VALUES ('$_POST[user]', '$pwd', '$_POST[email]')";
+        $state = "INSERT INTO HIDDEN_TABLE VALUES ('" .
+            mysql_real_escape_string($_POST[user]) .
+            "', '" .
+            mysql_real_escape_string($pwd) .
+            "', '" .
+            mysql_real_escape_string($_POST[email]) .
+            "');";
 		//echo $state;
 		$res = mysql_query($state);
 		
@@ -58,7 +64,8 @@ else if($_POST['Submit']=='UnRegister')
   		}
 		mysql_select_db("HIDDEN_DB", $con);
 		$pwd = encode5t($_POST['pwd']);
-		$state = "SELECT * FROM HIDDEN_TABLE WHERE HIDDEN_FIELD='$_POST[user]'";
+        $user = mysql_real_escape_string($_POST['user']);
+		$state = "SELECT * FROM HIDDEN_TABLE WHERE HIDDEN_FIELD='$user'";
 		$res = mysql_query($state);
 		$foundsome = false;
 		while($row = mysql_fetch_array($res))
@@ -67,7 +74,7 @@ else if($_POST['Submit']=='UnRegister')
   				$encodepwd = encode5t($_POST['pwd']);
   				if($row['pwd'] == $encodepwd)
   				{
-  					$rem = mysql_query("DELETE FROM HIDDEN_TABLE WHERE HIDDEN_FIELD='$_POST[user]'");
+  					$rem = mysql_query("DELETE FROM HIDDEN_TABLE WHERE HIDDEN_FIELD='$user'");
   					if ($rem == true)
 					{
 						echo "<p>Successfully removed from script</p>";
