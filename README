@@ -1,0 +1,7 @@
+This contains the php script that is supposed to run as a cronjob. The cronjob runs every 10 minutes.
+Once every 10 minutes has been selected to not put too much load on the jobmine server.
+
+Registering on the webpage http://blackberryhackernews.com/jobmine adds the user to the database, and the next time 
+the script runs the new user is checker.
+
+The script is very basic and hopefully by sharing the source it will become more improved in terms of securtiy and functionality.
